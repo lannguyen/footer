@@ -16,6 +16,8 @@ public class PhotosFragment extends Fragment {
  
         View rootView = inflater.inflate(R.layout.fragment_photos, container, false);
          
+        
+        
         return rootView;
     }
 }
