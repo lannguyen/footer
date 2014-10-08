@@ -4,6 +4,8 @@ import info.androidhive.slidingmenu.adapter.NavDrawerListAdapter;
 import info.androidhive.slidingmenu.model.NavDrawerItem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -19,6 +21,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.tsu.footer.fragment.DishFragment;
+import com.tsu.footer.fragment.DishItemAdapter;
 
 public class MainActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
@@ -164,32 +169,22 @@ public class MainActivity extends Activity {
 		Fragment fragment = null;
 		switch (position) {
 		case 0:
-			fragment = new HomeFragment();
+			List<String> dishName = Arrays.asList(new String[]{"Dish 1", "Dish 2", "Dish 3"});
+			DishItemAdapter adapter = new DishItemAdapter(this, dishName);
+			DishFragment dishFragment = new DishFragment();
+			dishFragment.setAdapter(adapter);
+			fragment = dishFragment;
+			
 			break;
 		case 1:
-			fragment = new FindPeopleFragment();
 			break;
-		case 2:
-			fragment = new PhotosFragment();
-			break;
-		case 3:
-			fragment = new CommunityFragment();
-			break;
-		case 4:
-			fragment = new PagesFragment();
-			break;
-		case 5:
-			fragment = new WhatsHotFragment();
-			break;
-
 		default:
 			break;
 		}
 
 		if (fragment != null) {
 			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.frame_container, fragment).commit();
+			fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
 
 			// update selected item and title, then close the drawer
 			mDrawerList.setItemChecked(position, true);

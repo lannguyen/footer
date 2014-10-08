@@ -12,9 +12,28 @@
         -->
     </style>
 
-    <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    
+    <style name="AppTheme" parent="@android:style/Theme.Holo">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@color/MediumWhite</item>
+    </style>
+
+    <style name="ListViewTheme" parent="@android:style/Theme.Holo">
+        <item name="android:background">@drawable/highlight_item</item>
+        <item name="android:divider">@color/White</item>
+        <item name="android:dividerHeight">2dp</item>
+        <item name="android:textColor">@color/White</item>
+    </style>
+
+    <style name="InvisibleFocusHolder">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:inputType">none</item>
     </style>
 
 </resources>
