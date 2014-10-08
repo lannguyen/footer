@@ -1,7 +1,6 @@
-package info.androidhive.slidingmenu;
+package com.tsu.footer;
 
-import info.androidhive.slidingmenu.adapter.NavDrawerListAdapter;
-import info.androidhive.slidingmenu.model.NavDrawerItem;
+import info.androidhive.slidingmenu.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,8 +21,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.tsu.footer.adapter.NavDrawerListAdapter;
 import com.tsu.footer.fragment.DishFragment;
 import com.tsu.footer.fragment.DishItemAdapter;
+import com.tsu.footer.model.NavDrawerItem;
 
 public class MainActivity extends Activity {
 	private DrawerLayout mDrawerLayout;

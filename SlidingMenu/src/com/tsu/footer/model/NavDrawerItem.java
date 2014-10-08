@@ -1,4 +1,4 @@
-package info.androidhive.slidingmenu.model;
+package com.tsu.footer.model;
 
 public class NavDrawerItem {
 	
