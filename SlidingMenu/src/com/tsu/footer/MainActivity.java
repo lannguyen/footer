@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -18,8 +20,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.tsu.footer.adapter.NavDrawerListAdapter;
 import com.tsu.footer.fragment.DishFragment;
@@ -43,6 +49,34 @@ public class MainActivity extends Activity {
 
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	private NavDrawerListAdapter adapter;
+	
+	private int percent = 0;
+	ProgressBar progressBar;
+	
+	private AsyncTask<Void, Void, Void> updateLoading = new AsyncTask<Void, Void, Void>() {
+		
+		@Override
+		protected Void doInBackground(Void... params) {
+			while(percent <= 100 ) {
+				try {
+					Thread.sleep(15);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				percent += 1;
+				onProgressUpdate();
+			}
+			return null;
+		}
+		
+		protected void onProgressUpdate(Void... values) {
+			progressBar.setProgress(percent);
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +143,37 @@ public class MainActivity extends Activity {
 			// on first time display view for first nav item
 			displayView(0);
 		}
+		
+		// create new ProgressBar and style it
+		progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
+		progressBar.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 24));
+		updateLoading.execute();
+		//progressBar.setProgress(percen);
+
+		// retrieve the top view of our application
+		final FrameLayout decorView = (FrameLayout) getWindow().getDecorView();
+		decorView.addView(progressBar);
+
+		// Here we try to position the ProgressBar to the correct position by looking
+		// at the position where content area starts. But during creating time, sizes 
+		// of the components are not set yet, so we have to wait until the components
+		// has been laid out
+		// Also note that doing progressBar.setY(136) will not work, because of different
+		// screen densities and different sizes of actionBar
+		ViewTreeObserver observer = progressBar.getViewTreeObserver();
+		observer.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+		    @Override
+		    public void onGlobalLayout() {
+		        View contentView = decorView.findViewById(android.R.id.content);
+		        progressBar.setY(contentView.getY() - 10);
+
+		        ViewTreeObserver observer = progressBar.getViewTreeObserver();
+		        observer.removeGlobalOnLayoutListener(this);
+		    }
+		});
+		progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progress_horizontal_holo_no_background_light));
+
+
 	}
 
 	/**
